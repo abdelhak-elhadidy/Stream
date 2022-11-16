@@ -25,8 +25,8 @@
     <string name="filler" formatted="true">Filler</string>
     <string name="duration_format" formatted="true">%d min</string>
 
-    <!-- <string name="app_name">CloudStream</string> -->
-    <string name="play_with_app_name">Riproduci con CloudStream</string>
+    <!-- <string name="app_name">VodBot</string> -->
+    <string name="play_with_app_name">Riproduci con VodBot</string>
     <string name="title_home">Home</string>
     <string name="title_search">Cerca</string>
     <string name="title_downloads">Scaricati</string>

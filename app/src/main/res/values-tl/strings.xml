@@ -21,7 +21,7 @@
     <string name="rated_format" formatted="true">Rated: %.1f</string>
     <string name="new_update_format" formatted="true">Bagong update!\n%s -> %s</string>
 
-    <string name="app_name">CloudStream</string>
+    <string name="app_name">VodBot</string>
     <string name="title_home">Home</string>
     <string name="title_search">Maghanap</string>
     <string name="title_downloads">Mga Downloads</string>

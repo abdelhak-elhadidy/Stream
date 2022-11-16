@@ -37,8 +37,8 @@
     <string name="filler" formatted="true">Filler</string>
     <string name="duration_format" formatted="true">%d dakika</string>
 
-    <string name="app_name">CloudStream</string>
-    <string name="play_with_app_name">CloudStream ile oynat</string>
+    <string name="app_name">VodBot</string>
+    <string name="play_with_app_name">VodBot ile oynat</string>
     <string name="title_home">Ana sayfa</string>
     <string name="title_search">Arama</string>
     <string name="title_downloads">İndirilenler</string>

@@ -17,8 +17,8 @@
     <string name="new_update_format" formatted="true">Nova atualização encontrada!\n%s -> %s</string>
     <string name="filler" formatted="true">Enchimento</string>
 	
-    <string name="app_name">CloudStream</string>
-	<string name="play_with_app_name">Reproduzir com CloudStream</string>
+    <string name="app_name">VodBot</string>
+	<string name="play_with_app_name">Reproduzir com VodBot</string>
     <string name="title_home">Início</string>
     <string name="title_search">Pesquisa</string>
     <string name="title_downloads">Transferências</string>

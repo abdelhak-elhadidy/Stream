@@ -5,7 +5,7 @@
     <string name="rated_format" formatted="true">റേറ്റിംഗ്: %.1f</string>
     <string name="new_update_format" formatted="true">പുതിയ അപ്ഡേറ്റ്\n%s -> %s</string>
 
-    <string name="app_name">CloudStream</string>
+    <string name="app_name">VodBot</string>
     <string name="title_home">ഹോം</string>
     <string name="title_search">തിരയുക</string>
     <string name="title_downloads">ഡൗൺലോഡ്സ്</string>

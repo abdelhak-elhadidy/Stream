@@ -6,7 +6,7 @@
     <string name="new_update_format" formatted="true">Пронајдена нова верзија на апликацијата!\n%s -> %s</string>
     <string name="filler" formatted="true">Филтер</string>
 
-    <string name="app_name">CloudStream</string>
+    <string name="app_name">VodBot</string>
     <string name="title_home">Дома</string>
     <string name="title_search">Барај</string>
     <string name="title_downloads">Превземања</string>

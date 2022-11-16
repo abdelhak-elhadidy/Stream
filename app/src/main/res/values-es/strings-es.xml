@@ -26,7 +26,7 @@
     <string name="filler" formatted="true">Rellenar</string> 
     <string name="duration_format" formatted="true">%d minutos</string> 
  
-    <string name="app_name">CloudStream</string>
+    <string name="app_name">VodBot</string>
     <string name="title_home">Inicio</string> 
     <string name="title_search">Búsqueda</string> 
     <string name="title_downloads">Descargas</string> 
