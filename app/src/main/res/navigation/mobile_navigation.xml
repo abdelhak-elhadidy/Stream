@@ -477,7 +477,7 @@
 
     <!--<fragment
         android:id="@+id/navigation_results"
-        android:name="com.lagradost.cloudstream3.ui.result.ResultFragment"
+        android:name="com.lagradost.egy.ui.result.ResultFragment"
         android:layout_height="match_parent"
         app:enterAnim="@anim/enter_anim"
         app:exitAnim="@anim/exit_anim"

@@ -228,7 +228,7 @@
                             </LinearLayout>
 
 
-                            <com.lagradost.cloudstream3.widget.FlowLayout
+                            <com.vodbot.egy.widget.FlowLayout
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 app:itemSpacing="10dp">
@@ -263,7 +263,7 @@
                                     android:id="@+id/result_meta_duration"
                                     style="@style/ResultInfoText"
                                     tools:text="121min" />
-                            </com.lagradost.cloudstream3.widget.FlowLayout>
+                            </com.vodbot.egy.widget.FlowLayout>
 
                             <!--
                             This has half margin and half padding to make TV focus on description look better.
@@ -797,7 +797,7 @@
                             android:textSize="17sp" />
                     </LinearLayout>
 
-                    <com.lagradost.cloudstream3.ui.AutofitRecyclerView
+                    <com.vodbot.egy.ui.AutofitRecyclerView
                         android:id="@+id/result_recommendations"
                         android:layout_width="match_parent"
 

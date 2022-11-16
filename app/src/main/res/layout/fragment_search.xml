@@ -85,7 +85,7 @@
     <include layout="@layout/tvtypes_chips_scroll" />
 
 
-    <com.lagradost.cloudstream3.ui.AutofitRecyclerView
+    <com.vodbot.egy.ui.AutofitRecyclerView
         android:id="@+id/search_autofit_results"
         android:layout_width="match_parent"
         android:layout_height="match_parent"

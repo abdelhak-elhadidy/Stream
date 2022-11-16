@@ -85,7 +85,7 @@
             android:layout_height="match_parent"
             tools:listitem="@layout/homepage_parent" />
 
-    <com.lagradost.cloudstream3.ui.AutofitRecyclerView
+    <com.vodbot.egy.ui.AutofitRecyclerView
             android:visibility="gone"
             android:nextFocusLeft="@id/nav_rail_view"
             android:descendantFocusability="afterDescendants"

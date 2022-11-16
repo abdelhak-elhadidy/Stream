@@ -1,0 +1,173 @@
+package com.vodbot.egy.ui.player
+
+import android.util.Log
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import com.vodbot.egy.mvvm.Resource
+import com.vodbot.egy.mvvm.launchSafe
+import com.vodbot.egy.mvvm.normalSafeApiCall
+import com.vodbot.egy.mvvm.safeApiCall
+import com.vodbot.egy.ui.result.ResultEpisode
+import com.vodbot.egy.utils.Coroutines.ioSafe
+import com.vodbot.egy.utils.EpisodeSkip
+import com.vodbot.egy.utils.ExtractorLink
+import com.vodbot.egy.utils.ExtractorUri
+import kotlinx.coroutines.Job
+
+class PlayerGeneratorViewModel : ViewModel() {
+    companion object {
+        val TAG = "PlayViewGen"
+    }
+
+    private var generator: IGenerator? = null
+
+    private val _currentLinks = MutableLiveData<Set<Pair<ExtractorLink?, ExtractorUri?>>>(setOf())
+    val currentLinks: LiveData<Set<Pair<ExtractorLink?, ExtractorUri?>>> = _currentLinks
+
+    private val _currentSubs = MutableLiveData<Set<SubtitleData>>(setOf())
+    val currentSubs: LiveData<Set<SubtitleData>> = _currentSubs
+
+    private val _loadingLinks = MutableLiveData<Resource<Boolean?>>()
+    val loadingLinks: LiveData<Resource<Boolean?>> = _loadingLinks
+
+    private val _currentStamps = MutableLiveData<List<EpisodeSkip.SkipStamp>>(emptyList())
+    val currentStamps: LiveData<List<EpisodeSkip.SkipStamp>> = _currentStamps
+
+    fun getId(): Int? {
+        return generator?.getCurrentId()
+    }
+
+    fun loadLinks(episode: Int) {
+        generator?.goto(episode)
+        loadLinks()
+    }
+
+    fun loadLinksPrev() {
+        Log.i(TAG, "loadLinksPrev")
+        if (generator?.hasPrev() == true) {
+            generator?.prev()
+            loadLinks()
+        }
+    }
+
+    fun loadLinksNext() {
+        Log.i(TAG, "loadLinksNext")
+        if (generator?.hasNext() == true) {
+            generator?.next()
+            loadLinks()
+        }
+    }
+
+    fun hasNextEpisode(): Boolean? {
+        return generator?.hasNext()
+    }
+
+    fun preLoadNextLinks() {
+        Log.i(TAG, "preLoadNextLinks")
+        currentJob?.cancel()
+        currentJob = viewModelScope.launchSafe {
+            if (generator?.hasCache == true && generator?.hasNext() == true) {
+                safeApiCall {
+                    generator?.generateLinks(
+                        clearCache = false,
+                        isCasting = false,
+                        {},
+                        {},
+                        offset = 1
+                    )
+                }
+            }
+        }
+    }
+
+    fun getMeta(): Any? {
+        return normalSafeApiCall { generator?.getCurrent() }
+    }
+
+    fun getAllMeta(): List<Any>? {
+        return normalSafeApiCall { generator?.getAll() }
+    }
+
+    fun getNextMeta(): Any? {
+        return normalSafeApiCall {
+            if (generator?.hasNext() == false) return@normalSafeApiCall null
+            generator?.getCurrent(offset = 1)
+        }
+    }
+
+    fun attachGenerator(newGenerator: IGenerator?) {
+        if (generator == null) {
+            generator = newGenerator
+        }
+    }
+
+    /**
+     * If duplicate nothing will happen
+     * */
+    fun addSubtitles(file: Set<SubtitleData>) {
+        val currentSubs = _currentSubs.value ?: emptySet()
+        // Prevent duplicates
+        val allSubs = (currentSubs + file).distinct().toSet()
+        // Do not post if there's nothing new
+        // Posting will refresh subtitles which will in turn
+        // make the subs to english if previously unselected
+        if (allSubs != currentSubs)
+            _currentSubs.postValue(allSubs)
+    }
+
+    private var currentJob: Job? = null
+    private var currentStampJob: Job? = null
+
+    fun loadStamps(duration: Long) {
+        //currentStampJob?.cancel()
+        currentStampJob = ioSafe {
+            val meta = generator?.getCurrent()
+            val page = (generator as? RepoLinkGenerator?)?.page
+            if (page != null && meta is ResultEpisode) {
+                _currentStamps.postValue(listOf())
+                _currentStamps.postValue(
+                    EpisodeSkip.getStamps(
+                        page,
+                        meta,
+                        duration,
+                        hasNextEpisode() ?: false
+                    )
+                )
+            }
+        }
+    }
+
+    fun loadLinks(clearCache: Boolean = false, isCasting: Boolean = false) {
+        Log.i(TAG, "loadLinks")
+        currentJob?.cancel()
+
+        currentJob = viewModelScope.launchSafe {
+            val currentLinks = mutableSetOf<Pair<ExtractorLink?, ExtractorUri?>>()
+            val currentSubs = mutableSetOf<SubtitleData>()
+
+            // clear old data
+            _currentSubs.postValue(currentSubs)
+            _currentLinks.postValue(currentLinks)
+
+            // load more data
+            _loadingLinks.postValue(Resource.Loading())
+            val loadingState = safeApiCall {
+                generator?.generateLinks(clearCache = clearCache, isCasting = isCasting, {
+                    currentLinks.add(it)
+                    _currentLinks.postValue(currentLinks)
+                }, {
+                    currentSubs.add(it)
+                    // _currentSubs.postValue(currentSubs) // this causes ConcurrentModificationException, so fuck it
+                })
+            }
+
+            _loadingLinks.postValue(loadingState)
+
+            _currentLinks.postValue(currentLinks)
+            _currentSubs.postValue(currentSubs)
+        }
+
+    }
+}
